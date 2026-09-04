@@ -451,23 +451,16 @@ footer .fnote{ font-size: 13px; color: var(--text-faint); margin-top: 6px; max-w
 .fee-note{ margin-top: 12px; font-size: 12px; color: var(--text-faint); font-style: italic; }
 
 
-/* PRODUCT SHOWCASE */
-.gender-toggle-wrap{ display:flex; justify-content:center; margin-bottom: 44px; }
-.gender-toggle{ display:inline-flex; gap: 4px; border: 1px solid var(--surface-line); border-radius: 100px; padding: 4px; background: var(--bg-soft); }
-.gender-btn{ padding: 11px 30px; border-radius: 100px; border: none; background: none; font-family: var(--label); font-size: 12px; font-weight: 400; letter-spacing: 0.8px; text-transform: uppercase; color: var(--text-muted); cursor: pointer; transition: all .2s ease; }
-.gender-btn.active{ background: var(--text); color: #FFFFFF; }
-.products-grid{ display:grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
-.product-card{ background: var(--surface); border: 1px solid var(--surface-line); border-radius: 3px; overflow: hidden; transition: border-color .2s ease, transform .2s ease; display: none; }
-.product-card.show{ display: flex; flex-direction: column; }
-.product-card:hover{ border-color: var(--coral); transform: translateY(-3px); }
-.product-card .p-image{ aspect-ratio: 1 / 1; display:flex; align-items:center; justify-content:center; color: var(--text-faint); background: linear-gradient(160deg, var(--bg-soft), var(--surface)); border-bottom: 1px solid var(--surface-line); }
-.product-card .p-body{ padding: 18px 20px 20px; flex: 1; display:flex; flex-direction:column; }
-.product-card .p-tag{ font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.6px; text-transform: uppercase; color: var(--coral); margin-bottom: 8px; }
-.product-card h4{ font-family: var(--display); font-size: 17px; font-weight: 600; margin-bottom: 6px; }
-.product-card p{ font-size: 13px; color: var(--text-muted); flex: 1; }
-.product-card .price{ margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--surface-line); font-family: var(--mono); font-size: 12px; color: var(--gold); letter-spacing: 0.3px; }
-.products-note{ margin-top: 32px; font-size: 13px; color: var(--text-faint); font-style: italic; text-align: center; }
-@media (max-width: 900px){ .products-grid{ grid-template-columns: repeat(2, 1fr); } .gender-btn{ padding: 10px 22px; } }
+
+/* PRODUCTS TEASER */
+#products-teaser{ padding-top: 20px; }
+.product-teaser{ display:flex; align-items:center; justify-content:space-between; gap:40px; background:var(--bg-soft); border:1px solid var(--surface-line); border-radius:3px; padding:40px 44px; }
+.product-teaser-copy{ max-width:680px; }
+.product-teaser-copy .eyebrow{ margin-bottom:16px; }
+.product-teaser-copy h2{ margin:0; }
+.product-teaser-copy p{ margin-top:14px; color:var(--text-muted); font-size:15px; max-width:620px; }
+@media (max-width:700px){ .product-teaser{ flex-direction:column; align-items:flex-start; padding:30px 24px; gap:24px; } }
+
 </style>
 </head>
 <body>
@@ -523,7 +516,7 @@ footer .fnote{ font-size: 13px; color: var(--text-faint); margin-top: 6px; max-w
       <div class="vhero-nav-desktop">
         <div class="glass-pill">
           <a href="menu.html" data-i18n="nav_gifts">What we send</a>
-          <a href="#products" data-i18n="nav_products">Products</a>
+          <a href="products.html" data-i18n="nav_products">Products</a>
           <a href="transfer.html" data-i18n="nav_transfer">Money transfer</a>
           <a href="about.html" data-i18n="nav_about">Our story</a>
           <div class="glass-drop">
@@ -555,7 +548,7 @@ footer .fnote{ font-size: 13px; color: var(--text-faint); margin-top: 6px; max-w
       <div class="vhero-drawer-links">
         <a href="menu.html" style="transition-delay:60ms" data-i18n="nav_gifts">What we send</a>
         <a href="transfer.html" style="transition-delay:120ms" data-i18n="nav_transfer">Money transfer</a>
-        <a href="#products" style="transition-delay:150ms" data-i18n="nav_products">Products</a>
+        <a href="products.html" style="transition-delay:150ms" data-i18n="nav_products">Products</a>
         <a href="converter.html" style="transition-delay:180ms" data-i18n="nav_converter">Currency</a>
         <a href="gallery.html" style="transition-delay:240ms" data-i18n="nav_gallery">Gallery</a>
         <a href="track.html" style="transition-delay:300ms" data-i18n="nav_track">Track order</a>
@@ -684,26 +677,16 @@ footer .fnote{ font-size: 13px; color: var(--text-faint); margin-top: 6px; max-w
   </div>
 </section>
 
-<section id="products">
+<section id="products-teaser">
   <div class="wrap">
-    <div class="section-head">
-      <div class="eyebrow" data-i18n="products_eyebrow">Products</div>
-      <h2 data-i18n="products_h2">A look at what we source</h2>
-      <p data-i18n="products_p">A running catalogue of items we regularly find, pack, and ship — for him or for her. This is a showcase, not a store: message us the piece and the size, and we'll quote and confirm before buying anything.</p>
-    </div>
-
-    <div class="gender-toggle-wrap">
-      <div class="gender-toggle" role="tablist" aria-label="Filter by gender">
-        <button type="button" class="gender-btn active" data-gender="women" data-i18n="tab_women">Women</button>
-        <button type="button" class="gender-btn" data-gender="men" data-i18n="tab_men">Men</button>
+    <div class="product-teaser">
+      <div class="product-teaser-copy">
+        <div class="eyebrow" data-i18n="products_teaser_eyebrow">Products</div>
+        <h2 data-i18n="products_teaser_h2">Looking for something special?</h2>
+        <p data-i18n="products_teaser_p">We also source a growing range of products for him and for her — from fashion and accessories to gifts and hard-to-find local items.</p>
       </div>
+      <a href="products.html" class="btn-primary" data-i18n="products_teaser_cta">Explore our products →</a>
     </div>
-
-    <div class="products-grid" id="products-grid">
-      <p id="products-loading" style="grid-column:1/-1; text-align:center; color:var(--text-faint); font-size:13px; padding:40px 0;">Loading products…</p>
-    </div>
-
-    <p class="products-note" data-i18n="products_note">This is a running list, not the full catalogue — send us a photo or a brand name and we'll check if we can source it.</p>
   </div>
 </section>
 
@@ -811,6 +794,10 @@ const translations = {
   id: {
     nav_home: "Beranda", nav_how: "Cara Kerja", nav_gifts: "Yang Kami Kirim", nav_gallery: "Galeri",
     nav_products: "Produk",
+    products_teaser_eyebrow: "Produk",
+    products_teaser_h2: "Mencari sesuatu yang spesial?",
+    products_teaser_p: "Kami juga mencari berbagai produk untuk dia dan untuknya — mulai dari fashion dan aksesori hingga hadiah dan barang lokal yang sulit ditemukan.",
+    products_teaser_cta: "Lihat produk kami →",
     products_eyebrow: "Produk", products_h2: "Sekilas apa yang kami cari",
     products_p: "Katalog barang yang rutin kami cari, kemas, dan kirim — untuk dia atau untuknya. Ini etalase, bukan toko: kirim pesan barang dan ukurannya, kami beri penawaran dan konfirmasi sebelum membeli.",
     tab_women: "Wanita", tab_men: "Pria",
@@ -940,78 +927,6 @@ if(fSubmit){
     if(message) text += `Message to include: "${message}"\n`;
 
     window.open(`https://wa.me/${targetNumber}?text=${encodeURIComponent(text)}`, '_blank');
-  });
-}
-
-// ---- Product showcase: load from API, render, then filter by gender ----
-const PRODUCTS_API = 'https://twostops-products-api.YOUR-SUBDOMAIN.workers.dev';
-
-const PRODUCT_ICONS = {
-  flower: '<circle cx="12" cy="8" r="2.6"></circle><circle cx="7" cy="12" r="2.6"></circle><circle cx="17" cy="12" r="2.6"></circle><circle cx="9.5" cy="16.5" r="2.6"></circle><circle cx="14.5" cy="16.5" r="2.6"></circle><circle cx="12" cy="13" r="1.3" fill="currentColor" stroke="none"></circle>',
-  scarf: '<path d="M4 7c3 2.5 13 2.5 16 0"></path><path d="M4 12c3 2.5 13 2.5 16 0"></path><path d="M4 17c3 2.5 13 2.5 16 0"></path>',
-  gem: '<path d="M4 9l4-5h8l4 5-8 11-8-11Z"></path><path d="M4 9h16"></path><path d="M9.5 4l2.5 5 2.5-5"></path>',
-  perfume: '<path d="M9.5 4h5v3.2L16 9v10a1.5 1.5 0 0 1-1.5 1.5h-5A1.5 1.5 0 0 1 8 19V9l1.5-1.8V4Z"></path><path d="M9.5 4h5"></path><path d="M8 12h8"></path>',
-  bag: '<path d="M6 8h12l1 12H5L6 8Z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path>',
-  wallet: '<rect x="3.5" y="6.5" width="17" height="12" rx="1.8"></rect><path d="M14 12.5h4"></path><circle cx="16.3" cy="12.5" r="0.9" fill="currentColor" stroke="none"></circle>',
-  grooming: '<rect x="9" y="3.5" width="6" height="10" rx="2"></rect><path d="M12 13.5V20"></path><path d="M9 20h6"></path>',
-  watch: '<circle cx="12" cy="12" r="5.5"></circle><path d="M12 9v3l2 1.3"></path><path d="M9.5 4h5v3h-5V4Z"></path><path d="M9.5 17h5v3h-5v-3Z"></path>',
-  sneaker: '<path d="M3 17.5c0-1.6 1.4-2.6 3-3l6-2.3c1-.4 1.6-1.3 1.6-2.4V8l4 2.6c1 .6 1.4 1 1.4 2v3.7a1.2 1.2 0 0 1-1.2 1.2H4.2A1.2 1.2 0 0 1 3 16.3v-.8Z"></path><path d="M3 16.5h18"></path>',
-};
-
-function escapeHtml(str){
-  const div = document.createElement('div');
-  div.textContent = str == null ? '' : String(str);
-  return div.innerHTML;
-}
-
-function renderProductCard(p, activeGender){
-  const iconPath = PRODUCT_ICONS[p.icon] || PRODUCT_ICONS.gem;
-  const priceBits = [];
-  if(p.price_inr) priceBits.push('From ₹' + escapeHtml(p.price_inr));
-  if(p.price_idr) priceBits.push('Rp ' + escapeHtml(p.price_idr));
-  const priceLine = priceBits.join(' · ');
-  const tag = p.gender === 'women' ? 'Women' : 'Men';
-  return `<div class="product-card${p.gender === activeGender ? ' show' : ''}" data-gender="${escapeHtml(p.gender)}">
-    <div class="p-image"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">${iconPath}</svg></div>
-    <div class="p-body">
-      <div class="p-tag">${tag}</div>
-      <h4>${escapeHtml(p.name)}</h4>
-      <p>${escapeHtml(p.description)}</p>
-      ${priceLine ? `<div class="price">${priceLine}</div>` : ''}
-    </div>
-  </div>`;
-}
-
-const productsGrid = document.getElementById('products-grid');
-if(productsGrid){
-  const currentGender = () => (document.querySelector('.gender-btn.active') || {}).dataset?.gender || 'women';
-
-  fetch(PRODUCTS_API + '/api/products')
-    .then(res => { if(!res.ok) throw new Error('bad response'); return res.json(); })
-    .then(products => {
-      if(!Array.isArray(products) || products.length === 0){
-        productsGrid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--text-faint);font-size:13px;padding:40px 0;">No products yet.</p>';
-        return;
-      }
-      const gender = currentGender();
-      productsGrid.innerHTML = products.map(p => renderProductCard(p, gender)).join('');
-    })
-    .catch(() => {
-      productsGrid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--text-faint);font-size:13px;padding:40px 0;">Couldn\'t load products right now — please refresh, or check back shortly.</p>';
-    });
-}
-
-const genderBtns = document.querySelectorAll('.gender-btn');
-if(genderBtns.length){
-  genderBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      genderBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const gender = btn.dataset.gender;
-      document.querySelectorAll('.product-card').forEach(card => {
-        card.classList.toggle('show', card.dataset.gender === gender);
-      });
-    });
   });
 }
 
