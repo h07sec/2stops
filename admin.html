@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Product Admin — Two Stops</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,450;9..144,600;9..144,700&family=Work+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg: #FFFFFF;
+  --bg-soft: #FAFAF8;
+  --surface: #FFFFFF;
+  --surface-line: #E4E3DF;
+  --coral: #A8672F;
+  --gold: #8A8A82;
+  --text: #111111;
+  --text-muted: #64645E;
+  --text-faint: #9B9B93;
+  --danger: #B23A2E;
+  --display: 'Fraunces', serif;
+  --body: 'Work Sans', sans-serif;
+  --mono: 'IBM Plex Mono', monospace;
+}
+*{ box-sizing: border-box; margin:0; padding:0; }
+body{ background: var(--bg-soft); color: var(--text); font-family: var(--body); line-height: 1.55; -webkit-font-smoothing: antialiased; }
+a{ color: inherit; }
+.wrap{ max-width: 980px; margin: 0 auto; padding: 40px 24px 80px; }
+
+/* Gate */
+#gate{ min-height: 100vh; display:flex; align-items:center; justify-content:center; padding: 24px; }
+.gate-box{ width: 100%; max-width: 360px; background: var(--surface); border: 1px solid var(--surface-line); border-radius: 4px; padding: 36px 32px; text-align:center; }
+.gate-box h1{ font-family: var(--display); font-size: 22px; margin-bottom: 6px; }
+.gate-box p{ font-size: 13px; color: var(--text-muted); margin-bottom: 22px; }
+.gate-box input{ width:100%; padding: 12px 14px; border: 1px solid var(--surface-line); border-radius: 3px; font-size: 14px; font-family: var(--body); margin-bottom: 12px; }
+.gate-box button{ width:100%; padding: 12px 14px; border: none; border-radius: 3px; background: var(--text); color:#fff; font-size: 13.5px; font-weight: 500; cursor:pointer; }
+.gate-error{ color: var(--danger); font-size: 12.5px; margin-top: 10px; min-height: 16px; }
+
+/* Dashboard */
+#dashboard{ display:none; }
+header.admin-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom: 28px; flex-wrap: wrap; gap: 12px; }
+header.admin-head h1{ font-family: var(--display); font-size: 26px; }
+header.admin-head a.back{ font-size: 12.5px; color: var(--text-muted); text-decoration: none; border: 1px solid var(--surface-line); padding: 8px 14px; border-radius: 100px; }
+#logout{ font-size: 12.5px; color: var(--text-muted); background:none; border:none; cursor:pointer; text-decoration: underline; }
+
+.panel{ background: var(--surface); border: 1px solid var(--surface-line); border-radius: 4px; padding: 24px 26px; margin-bottom: 28px; }
+.panel h2{ font-family: var(--display); font-size: 17px; margin-bottom: 4px; }
+.panel .sub{ font-size: 12.5px; color: var(--text-faint); margin-bottom: 18px; }
+
+.form-grid{ display:grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+.form-grid .full{ grid-column: 1 / -1; }
+label{ display:block; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-faint); margin-bottom: 6px; }
+input, select, textarea{ width:100%; padding: 10px 12px; border: 1px solid var(--surface-line); border-radius: 3px; font-size: 13.5px; font-family: var(--body); background: var(--bg); }
+textarea{ resize: vertical; min-height: 56px; }
+.form-actions{ margin-top: 18px; display:flex; gap: 10px; align-items:center; }
+.btn{ padding: 10px 20px; border-radius: 3px; border: 1px solid var(--text); background: var(--text); color:#fff; font-size: 13px; font-weight: 500; cursor:pointer; }
+.btn.secondary{ background: none; color: var(--text); }
+.btn.danger{ background: var(--danger); border-color: var(--danger); }
+.form-msg{ font-size: 12.5px; color: var(--text-muted); }
+.form-msg.error{ color: var(--danger); }
+.form-msg.ok{ color: #3D7A4A; }
+
+table{ width:100%; border-collapse: collapse; }
+th, td{ text-align:left; padding: 10px 8px; border-bottom: 1px solid var(--surface-line); font-size: 13px; vertical-align: top; }
+th{ font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-faint); font-weight: 500; }
+td.name{ font-weight: 500; }
+td.desc{ color: var(--text-muted); max-width: 280px; }
+td.actions{ white-space: nowrap; text-align: right; }
+td.actions button{ font-size: 12px; padding: 6px 10px; border-radius: 3px; border: 1px solid var(--surface-line); background: var(--bg); cursor:pointer; margin-left: 6px; }
+td.actions button.edit:hover{ border-color: var(--text); }
+td.actions button.del:hover{ border-color: var(--danger); color: var(--danger); }
+.tag-pill{ display:inline-block; font-family: var(--mono); font-size: 10px; text-transform: uppercase; padding: 2px 8px; border-radius: 100px; background: var(--bg-soft); border: 1px solid var(--surface-line); color: var(--text-muted); }
+.empty-row td{ text-align:center; color: var(--text-faint); padding: 28px 0; }
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <div class="gate-box">
+    <h1>Product Admin</h1>
+    <p>Enter the admin password to manage products.</p>
+    <input type="password" id="gate-password" placeholder="Password" autocomplete="current-password">
+    <button type="button" id="gate-submit">Unlock</button>
+    <div class="gate-error" id="gate-error"></div>
+  </div>
+</div>
+
+<div id="dashboard">
+  <div class="wrap">
+    <header class="admin-head">
+      <h1>Products</h1>
+      <div style="display:flex; gap:16px; align-items:center;">
+        <a class="back" href="products.html">← View live page</a>
+        <button id="logout">Log out</button>
+      </div>
+    </header>
+
+    <div class="panel">
+      <h2 id="form-title">Add a product</h2>
+      <div class="sub">Fields marked with an image icon show as the placeholder picture on the showcase page.</div>
+      <form id="product-form">
+        <input type="hidden" id="p-id" value="">
+        <div class="form-grid">
+          <div>
+            <label for="p-gender">Gender</label>
+            <select id="p-gender" required>
+              <option value="women">Women</option>
+              <option value="men">Men</option>
+            </select>
+          </div>
+          <div>
+            <label for="p-icon">Icon</label>
+            <select id="p-icon">
+              <option value="flower">Flower</option>
+              <option value="scarf">Scarf</option>
+              <option value="gem">Jewelry</option>
+              <option value="perfume">Perfume / skincare</option>
+              <option value="bag">Bag</option>
+              <option value="wallet">Wallet</option>
+              <option value="grooming">Grooming</option>
+              <option value="watch">Watch</option>
+              <option value="sneaker">Sneaker</option>
+            </select>
+          </div>
+          <div class="full">
+            <label for="p-name">Product name</label>
+            <input type="text" id="p-name" placeholder="e.g. Floral Bouquet" required>
+          </div>
+          <div class="full">
+            <label for="p-desc">Short description</label>
+            <textarea id="p-desc" placeholder="One line about the product"></textarea>
+          </div>
+          <div>
+            <label for="p-inr">Price — ₹ (INR)</label>
+            <input type="text" id="p-inr" placeholder="e.g. 699">
+          </div>
+          <div>
+            <label for="p-idr">Price — Rp (IDR)</label>
+            <input type="text" id="p-idr" placeholder="e.g. 115K">
+          </div>
+          <div>
+            <label for="p-sort">Sort order</label>
+            <input type="number" id="p-sort" value="0">
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn" id="form-submit">Add product</button>
+          <button type="button" class="btn secondary" id="form-cancel" style="display:none;">Cancel edit</button>
+          <span class="form-msg" id="form-msg"></span>
+        </div>
+      </form>
+    </div>
+
+    <div class="panel">
+      <h2>Live catalogue</h2>
+      <div class="sub" id="count-sub">Loading…</div>
+      <table>
+        <thead>
+          <tr><th>Gender</th><th>Name</th><th>Description</th><th>Price</th><th></th></tr>
+        </thead>
+        <tbody id="product-rows">
+          <tr class="empty-row"><td colspan="5">Loading products…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+// Set this to your deployed Worker URL (same value as in products.html)
+const PRODUCTS_API = 'https://twostops-products-api.iybmickey.workers.dev';
+
+const gate = document.getElementById('gate');
+const dashboard = document.getElementById('dashboard');
+const gateError = document.getElementById('gate-error');
+let adminKey = sessionStorage.getItem('twostops_admin_key') || '';
+
+function showDashboard(){
+  gate.style.display = 'none';
+  dashboard.style.display = 'block';
+  loadProducts();
+}
+
+async function tryLogin(password){
+  gateError.textContent = '';
+  try{
+    const res = await fetch(PRODUCTS_API + '/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password })
+    });
+    const data = await res.json();
+    if(data.ok){
+      adminKey = password;
+      sessionStorage.setItem('twostops_admin_key', password);
+      showDashboard();
+    } else {
+      gateError.textContent = 'Wrong password.';
+    }
+  } catch(e){
+    gateError.textContent = "Couldn't reach the server — check PRODUCTS_API is set correctly.";
+  }
+}
+
+document.getElementById('gate-submit').addEventListener('click', () => {
+  const pw = document.getElementById('gate-password').value;
+  if(pw) tryLogin(pw);
+});
+document.getElementById('gate-password').addEventListener('keydown', (e) => {
+  if(e.key === 'Enter'){ document.getElementById('gate-submit').click(); }
+});
+document.getElementById('logout').addEventListener('click', () => {
+  sessionStorage.removeItem('twostops_admin_key');
+  adminKey = '';
+  dashboard.style.display = 'none';
+  gate.style.display = 'flex';
+});
+
+if(adminKey){ tryLogin(adminKey); }
+
+// ---- Product CRUD ----
+const form = document.getElementById('product-form');
+const formMsg = document.getElementById('form-msg');
+const formTitle = document.getElementById('form-title');
+const formSubmit = document.getElementById('form-submit');
+const formCancel = document.getElementById('form-cancel');
+const rowsEl = document.getElementById('product-rows');
+const countSub = document.getElementById('count-sub');
+
+function resetForm(){
+  document.getElementById('p-id').value = '';
+  form.reset();
+  formTitle.textContent = 'Add a product';
+  formSubmit.textContent = 'Add product';
+  formCancel.style.display = 'none';
+  formMsg.textContent = '';
+  formMsg.className = 'form-msg';
+}
+formCancel.addEventListener('click', resetForm);
+
+async function loadProducts(){
+  countSub.textContent = 'Loading…';
+  try{
+    const res = await fetch(PRODUCTS_API + '/api/products');
+    const products = await res.json();
+    renderRows(products);
+    countSub.textContent = products.length + ' product' + (products.length === 1 ? '' : 's') + ' live on the showcase page.';
+  } catch(e){
+    countSub.textContent = "Couldn't load products.";
+    rowsEl.innerHTML = '<tr class="empty-row"><td colspan="5">Failed to load — check PRODUCTS_API and try again.</td></tr>';
+  }
+}
+
+function renderRows(products){
+  if(!products.length){
+    rowsEl.innerHTML = '<tr class="empty-row"><td colspan="5">No products yet — add one above.</td></tr>';
+    return;
+  }
+  rowsEl.innerHTML = products.map(p => {
+    const price = [p.price_inr ? '₹' + p.price_inr : '', p.price_idr ? 'Rp ' + p.price_idr : ''].filter(Boolean).join(' · ');
+    return `<tr>
+      <td><span class="tag-pill">${p.gender}</span></td>
+      <td class="name">${escapeHtml(p.name)}</td>
+      <td class="desc">${escapeHtml(p.description || '')}</td>
+      <td>${escapeHtml(price)}</td>
+      <td class="actions">
+        <button class="edit" data-id="${p.id}">Edit</button>
+        <button class="del" data-id="${p.id}">Delete</button>
+      </td>
+    </tr>`;
+  }).join('');
+
+  rowsEl.querySelectorAll('button.edit').forEach(btn => {
+    btn.addEventListener('click', () => editProduct(btn.dataset.id, products));
+  });
+  rowsEl.querySelectorAll('button.del').forEach(btn => {
+    btn.addEventListener('click', () => deleteProduct(btn.dataset.id));
+  });
+}
+
+function escapeHtml(str){
+  const div = document.createElement('div');
+  div.textContent = str == null ? '' : String(str);
+  return div.innerHTML;
+}
+
+function editProduct(id, products){
+  const p = products.find(x => x.id === id);
+  if(!p) return;
+  document.getElementById('p-id').value = p.id;
+  document.getElementById('p-gender').value = p.gender;
+  document.getElementById('p-icon').value = p.icon || 'gem';
+  document.getElementById('p-name').value = p.name;
+  document.getElementById('p-desc').value = p.description || '';
+  document.getElementById('p-inr').value = p.price_inr || '';
+  document.getElementById('p-idr').value = p.price_idr || '';
+  document.getElementById('p-sort').value = p.sort_order || 0;
+  formTitle.textContent = 'Edit product';
+  formSubmit.textContent = 'Save changes';
+  formCancel.style.display = 'inline-block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+async function deleteProduct(id){
+  if(!confirm('Remove this product from the showcase page?')) return;
+  try{
+    const res = await fetch(PRODUCTS_API + '/api/products/' + id, {
+      method: 'DELETE',
+      headers: { 'X-Admin-Key': adminKey }
+    });
+    if(!res.ok) throw new Error();
+    loadProducts();
+  } catch(e){
+    alert("Couldn't delete — please try again.");
+  }
+}
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const id = document.getElementById('p-id').value;
+  const body = {
+    gender: document.getElementById('p-gender').value,
+    icon: document.getElementById('p-icon').value,
+    name: document.getElementById('p-name').value.trim(),
+    description: document.getElementById('p-desc').value.trim(),
+    price_inr: document.getElementById('p-inr').value.trim(),
+    price_idr: document.getElementById('p-idr').value.trim(),
+    sort_order: parseInt(document.getElementById('p-sort').value, 10) || 0,
+  };
+  if(!body.name){
+    formMsg.textContent = 'Product name is required.';
+    formMsg.className = 'form-msg error';
+    return;
+  }
+  formSubmit.disabled = true;
+  formMsg.textContent = 'Saving…';
+  formMsg.className = 'form-msg';
+  try{
+    const url = id ? PRODUCTS_API + '/api/products/' + id : PRODUCTS_API + '/api/products';
+    const method = id ? 'PUT' : 'POST';
+    const res = await fetch(url, {
+      method,
+      headers: { 'Content-Type': 'application/json', 'X-Admin-Key': adminKey },
+      body: JSON.stringify(body)
+    });
+    if(!res.ok) throw new Error();
+    formMsg.textContent = 'Saved.';
+    formMsg.className = 'form-msg ok';
+    resetForm();
+    loadProducts();
+  } catch(e){
+    formMsg.textContent = "Couldn't save — check the password and connection, then try again.";
+    formMsg.className = 'form-msg error';
+  } finally {
+    formSubmit.disabled = false;
+  }
+});
+</script>
+</body>
+</html>
