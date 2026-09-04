@@ -164,7 +164,7 @@ h2{ font-family: var(--display); font-size: clamp(28px, 3.6vw, 40px); font-weigh
 .gifts{ display:grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
 .gift-card{ background: var(--surface); border: 1px solid var(--surface-line); border-radius: 2px; padding: 26px 22px; transition: border-color .2s ease, transform .2s ease; }
 .gift-card:hover{ border-color: var(--coral); transform: translateY(-3px); }
-.gift-card .mark{ width: 38px; height: 38px; border-radius: 2px; background: var(--text); display:flex; align-items:center; justify-content:center; font-size: 17px; margin-bottom: 18px; color: var(--bg); }
+.gift-card .mark{ width: 30px; height: 30px; display:flex; align-items:center; justify-content:center; margin-bottom: 16px; color: var(--coral); }
 .gift-card h4{ font-family: var(--display); font-size: 18px; font-weight: 600; margin-bottom: 8px; }
 .gift-card p{ font-size: 13.5px; color: var(--text-muted); }
 .gift-card .price{ margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--surface-line); font-family: var(--mono); font-size: 12.5px; color: var(--gold); letter-spacing: 0.3px; }
@@ -282,7 +282,7 @@ footer .fnote{ font-size: 13px; color: var(--text-faint); margin-top: 6px; max-w
 .services-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
 .service-card{ background: var(--surface); border: 1px solid var(--surface-line); border-radius: 3px; padding: 30px; transition: border-color .2s ease, transform .2s ease; }
 .service-card:hover{ border-color: var(--coral); transform: translateY(-3px); }
-.service-card .mark{ width: 40px; height: 40px; border-radius: 2px; background: var(--text); display:flex; align-items:center; justify-content:center; font-size: 18px; margin-bottom: 18px; color: var(--bg); }
+.service-card .mark{ width: 32px; height: 32px; display:flex; align-items:center; justify-content:center; margin-bottom: 18px; color: var(--coral); }
 .service-card h4{ font-family: var(--display); font-size: 19px; font-weight: 600; margin-bottom: 8px; }
 .service-card p{ font-size: 13.5px; color: var(--text-muted); margin-bottom: 16px; }
 .service-card a{ font-size: 13.5px; color: var(--coral); font-weight: 500; }
@@ -332,7 +332,7 @@ footer .fnote{ font-size: 13px; color: var(--text-faint); margin-top: 6px; max-w
 
 <nav>
   <div class="wrap">
-    <div class="logo">TWO STOPS</div>
+    <a href="index.html" class="logo">TWO STOPS</a>
     <div class="nav-links">
       <a href="index.html" data-i18n="nav_home">Home</a>
       <a href="menu.html" class="active" data-i18n="nav_gifts">What we send</a>
@@ -363,14 +363,14 @@ footer .fnote{ font-size: 13px; color: var(--text-faint); margin-top: 6px; max-w
 <section id="gifts" style="border-top:none;">
   <div class="wrap">
     <div class="gifts">
-      <div class="gift-card"><div class="mark">✿</div><h4>Flowers</h4><p>Fresh, city-sourced bouquets, packed and shipped the same day.</p><div class="price">From ₹699 · Rp 115K</div></div>
-      <div class="gift-card"><div class="mark">◆</div><h4>Cakes & sweets</h4><p>Local bakeries, ordered same-day. Mithai on one side, kue on the other.</p><div class="price">From ₹899 · Rp 150K</div></div>
-      <div class="gift-card"><div class="mark">✎</div><h4>Handwritten letters</h4><p>Written by us, in your words, then shipped with the rest of the order.</p><div class="price">From ₹349 · Rp 60K</div></div>
-      <div class="gift-card"><div class="mark">◈</div><h4>Hampers</h4><p>Snacks, small keepsakes, and local specialties, packed as one thoughtful box.</p><div class="price">From ₹1,299 · Rp 215K</div></div>
-      <div class="gift-card"><div class="mark">❋</div><h4>Chocolates</h4><p>Local favourites and imported boxes, packed to survive the trip.</p><div class="price">From ₹599 · Rp 100K</div></div>
-      <div class="gift-card"><div class="mark">⚘</div><h4>Perfume & skincare</h4><p>Small bottles of local, hard-to-find brands your partner can't order themselves.</p><div class="price">From ₹999 · Rp 165K</div></div>
-      <div class="gift-card"><div class="mark">⬥</div><h4>Keepsakes & jewelry</h4><p>Small pieces — a bracelet, a ring, a charm — sized and chosen with your notes.</p><div class="price">From ₹1,499 · Rp 250K</div></div>
-      <div class="gift-card"><div class="mark">❖</div><h4>Plush & photo gifts</h4><p>A soft toy, a printed photo, a small frame — the things that sit on a desk for years.</p><div class="price">From ₹649 · Rp 110K</div></div>
+      <div class="gift-card"><div class="mark"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="2.6"></circle><circle cx="7" cy="12" r="2.6"></circle><circle cx="17" cy="12" r="2.6"></circle><circle cx="9.5" cy="16.5" r="2.6"></circle><circle cx="14.5" cy="16.5" r="2.6"></circle><circle cx="12" cy="13" r="1.3" fill="currentColor" stroke="none"></circle></svg></div><h4>Flowers</h4><p>Fresh, city-sourced bouquets, packed and shipped the same day.</p><div class="price">From ₹699 · Rp 115K</div></div>
+      <div class="gift-card"><div class="mark"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20v-7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v7"></path><path d="M3 20h18"></path><path d="M8 11V9a4 4 0 0 1 8 0v2"></path><path d="M12 3.2v1.6"></path></svg></div><h4>Cakes & sweets</h4><p>Local bakeries, ordered same-day. Mithai on one side, kue on the other.</p><div class="price">From ₹899 · Rp 150K</div></div>
+      <div class="gift-card"><div class="mark"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5V17l10.5-10.5a1.8 1.8 0 0 1 2.5 2.5L6.5 19.5H4Z"></path><path d="M13 5.5l2.5 2.5"></path></svg></div><h4>Handwritten letters</h4><p>Written by us, in your words, then shipped with the rest of the order.</p><div class="price">From ₹349 · Rp 60K</div></div>
+      <div class="gift-card"><div class="mark"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10l1.4-4.2A2 2 0 0 1 7.3 4.4h9.4a2 2 0 0 1 1.9 1.4L20 10"></path><path d="M4 10h16v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8Z"></path><path d="M9 13.5h6"></path></svg></div><h4>Hampers</h4><p>Snacks, small keepsakes, and local specialties, packed as one thoughtful box.</p><div class="price">From ₹1,299 · Rp 215K</div></div>
+      <div class="gift-card"><div class="mark"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="9.5" width="16" height="9" rx="1.5"></rect><path d="M4 13.5h16"></path><path d="M8 9.5V7.8a1.8 1.8 0 0 1 3.6 0"></path><path d="M16 9.5V7.8a1.8 1.8 0 0 0-3.6 0"></path></svg></div><h4>Chocolates</h4><p>Local favourites and imported boxes, packed to survive the trip.</p><div class="price">From ₹599 · Rp 100K</div></div>
+      <div class="gift-card"><div class="mark"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 4h5v3.2L16 9v10a1.5 1.5 0 0 1-1.5 1.5h-5A1.5 1.5 0 0 1 8 19V9l1.5-1.8V4Z"></path><path d="M9.5 4h5"></path><path d="M8 12h8"></path></svg></div><h4>Perfume & skincare</h4><p>Small bottles of local, hard-to-find brands your partner can't order themselves.</p><div class="price">From ₹999 · Rp 165K</div></div>
+      <div class="gift-card"><div class="mark"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10l3.5 5L12 21 3.5 9 7 4Z"></path><path d="M3.5 9h17"></path><path d="M9 4l3 5 3-5"></path></svg></div><h4>Keepsakes & jewelry</h4><p>Small pieces — a bracelet, a ring, a charm — sized and chosen with your notes.</p><div class="price">From ₹1,499 · Rp 250K</div></div>
+      <div class="gift-card"><div class="mark"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="13" rx="1.8"></rect><circle cx="8.5" cy="10" r="1.6"></circle><path d="M3.5 15.5l4-3.5 3 2.5 3.5-4 5.5 5"></path></svg></div><h4>Plush & photo gifts</h4><p>A soft toy, a printed photo, a small frame — the things that sit on a desk for years.</p><div class="price">From ₹649 · Rp 110K</div></div>
     </div>
   </div>
 </section>
@@ -395,7 +395,7 @@ footer .fnote{ font-size: 13px; color: var(--text-faint); margin-top: 6px; max-w
   <div class="wrap">
     <div class="footer-top">
       <div>
-        <div class="logo" style="font-size:13px;">TWO STOPS</div>
+        <a href="index.html" class="logo" style="font-size:13px;">TWO STOPS</a>
         <div class="fnote" data-i18n="footer_note">Run by two people, in two countries, closing one distance at a time.</div>
       </div>
       <div class="footer-social">
@@ -412,7 +412,7 @@ footer .fnote{ font-size: 13px; color: var(--text-faint); margin-top: 6px; max-w
 <script>
 // ============ TODO before launch ============
 // Replace with your real numbers (country code, no + or spaces)
-const WHATSAPP_NUMBER_INDIA = '919294790219';
+const WHATSAPP_NUMBER_INDIA = '917477090219';
 const WHATSAPP_NUMBER_INDONESIA = '6289526180566';
 // ==============================================
 
