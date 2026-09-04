@@ -122,7 +122,19 @@ td.actions button.del:hover{ border-color: var(--danger); color: var(--danger); 
               <option value="grooming">Grooming</option>
               <option value="watch">Watch</option>
               <option value="sneaker">Sneaker</option>
+              <option value="shirt">Shirt</option>
+              <option value="sunglasses">Sunglasses</option>
+              <option value="candle">Candle</option>
+              <option value="book">Book</option>
+              <option value="chocolate">Chocolate box</option>
+              <option value="cap">Cap</option>
+              <option value="headphones">Headphones</option>
+              <option value="plant">Plant</option>
             </select>
+          </div>
+          <div class="full">
+            <label for="p-image">Product image URL <span style="text-transform:none; letter-spacing:0;">(optional — paste a link, e.g. from Imgur, Google Drive, or your own hosting. Leave blank to use the icon instead.)</span></label>
+            <input type="text" id="p-image" placeholder="https://...">
           </div>
           <div class="full">
             <label for="p-name">Product name</label>
@@ -260,9 +272,12 @@ function renderRows(products){
   }
   rowsEl.innerHTML = products.map(p => {
     const price = [p.price_inr ? '₹' + p.price_inr : '', p.price_idr ? 'Rp ' + p.price_idr : ''].filter(Boolean).join(' · ');
+    const thumb = p.image_url
+      ? `<img src="${escapeHtml(p.image_url)}" alt="" style="width:34px;height:34px;object-fit:cover;border-radius:3px;border:1px solid var(--surface-line);vertical-align:middle;margin-right:8px;" onerror="this.style.display='none';">`
+      : '';
     return `<tr>
       <td><span class="tag-pill">${p.gender}</span></td>
-      <td class="name">${escapeHtml(p.name)}</td>
+      <td class="name">${thumb}${escapeHtml(p.name)}</td>
       <td class="desc">${escapeHtml(p.description || '')}</td>
       <td>${escapeHtml(price)}</td>
       <td class="actions">
@@ -292,6 +307,7 @@ function editProduct(id, products){
   document.getElementById('p-id').value = p.id;
   document.getElementById('p-gender').value = p.gender;
   document.getElementById('p-icon').value = p.icon || 'gem';
+  document.getElementById('p-image').value = p.image_url || '';
   document.getElementById('p-name').value = p.name;
   document.getElementById('p-desc').value = p.description || '';
   document.getElementById('p-inr').value = p.price_inr || '';
@@ -323,6 +339,7 @@ form.addEventListener('submit', async (e) => {
   const body = {
     gender: document.getElementById('p-gender').value,
     icon: document.getElementById('p-icon').value,
+    image_url: document.getElementById('p-image').value.trim(),
     name: document.getElementById('p-name').value.trim(),
     description: document.getElementById('p-desc').value.trim(),
     price_inr: document.getElementById('p-inr').value.trim(),
