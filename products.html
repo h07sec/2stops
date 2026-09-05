@@ -371,7 +371,7 @@ footer .fnote{ font-size: 13px; color: var(--text-faint); margin-top: 6px; max-w
     font-size: 7px;
     letter-spacing: .11em;
   }
-  .product-card-name { font-size: 18px; line-height: 1.05; }
+  .product-card-name { font-size: 14px; line-height: 1.1; }
   .product-card-brand { margin-top: 5px; font-size: 8px; }
   .product-card-bottom {
     margin-top: 8px;
@@ -382,6 +382,9 @@ footer .fnote{ font-size: 13px; color: var(--text-faint); margin-top: 6px; max-w
   .product-card-meta { font-size: 7px; }
   .products-note { margin-top: 36px; font-size: 10px; }
 }
+
+
+
 </style>
 </head>
 <body>
@@ -448,7 +451,7 @@ footer .fnote{ font-size: 13px; color: var(--text-faint); margin-top: 6px; max-w
 
 <div class="product-modal" id="product-modal" aria-hidden="true">
   <div class="product-modal-inner" role="dialog" aria-modal="true" aria-labelledby="product-modal-name">
-    <button type="button" class="product-modal-close" id="product-modal-close" aria-label="Close">×</button>
+    
     <div class="product-modal-image" id="product-modal-image"></div>
     <div class="product-modal-content">
       <div class="product-modal-tag" id="product-modal-tag"></div>
@@ -457,10 +460,6 @@ footer .fnote{ font-size: 13px; color: var(--text-faint); margin-top: 6px; max-w
       <div class="product-modal-price" id="product-modal-price"></div>
       <p class="product-modal-desc" id="product-modal-desc"></p>
       <div class="product-detail-list">
-        <div class="product-detail-row"><strong>Sizes</strong><span id="product-modal-sizes"></span></div>
-        <div class="product-detail-row"><strong>Colors</strong><span id="product-modal-colors"></span></div>
-        <div class="product-detail-row"><strong>Material</strong><span id="product-modal-material"></span></div>
-        <div class="product-detail-row"><strong>Details</strong><span id="product-modal-details"></span></div>
       </div>
     </div>
   </div>
@@ -488,6 +487,13 @@ footer .fnote{ font-size: 13px; color: var(--text-faint); margin-top: 6px; max-w
 // ============ TODO before launch ============
 // Replace with your real numbers (country code, no + or spaces)
 // Products API — set this to your deployed Worker URL, e.g. 'https://twostops-products-api.yoursubdomain.workers.dev'
+function cleanProductText(value) {
+  return String(value ?? "")
+    .replace(/\\*\\*/g, "")
+    .replace(/^\\s*#+\\s*/gm, "")
+    .trim();
+}
+
 const PRODUCTS_API = 'https://twostops-products-api.iybmickey.workers.dev';
 
 const WHATSAPP_NUMBER_INDIA = '917477090219';
@@ -777,12 +783,10 @@ function openProductModal(p){
   setProductText('product-modal-brand', p.brand || '');
   setProductText('product-modal-price', productPrice(p).replaceAll('&amp;','&') || 'Price on request');
   setProductText('product-modal-desc', p.description || 'Details available on request.');
-  setProductText('product-modal-sizes', p.sizes);
-  setProductText('product-modal-colors', p.colors);
-  setProductText('product-modal-material', p.material);
-  setProductText('product-modal-details', p.details);
 
-  const imageBox = document.getElementById('product-modal-image');
+
+
+const imageBox = document.getElementById('product-modal-image');
   if(imageBox){
     if(p.image_url){
       imageBox.innerHTML = `<img src="${escapeHtml(p.image_url)}" alt="${escapeHtml(p.name)}"
