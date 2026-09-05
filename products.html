@@ -344,7 +344,7 @@ footer .fnote{ font-size: 13px; color: var(--text-faint); margin-top: 6px; max-w
 .product-card .p-image::after{ content:'View details  →'; position:absolute; right:15px; bottom:15px; padding:11px 13px; background:rgba(255,253,249,.94); color:var(--text); font-family:var(--label); font-size:10px; letter-spacing:.8px; text-transform:uppercase; opacity:0; transform:translateY(5px); transition:all .25s ease; }
 .product-card:hover .p-image::after{ opacity:1; transform:translateY(0); }
 .product-card .p-body{ padding:16px 1px 0; flex:1; display:flex; flex-direction:column; }
-.product-card .p-tag{ font-family:var(--mono); font-size:9px; letter-spacing:1.2px; text-transform:uppercase; color:var(--text-faint); margin-bottom:7px; }
+
 .product-card h4{ font-family:var(--display); font-size:14px !important; line-height:1.15; font-weight:500; letter-spacing:-.1px; margin:0 0 6px; }
 .product-card p{ font-size:12px; line-height:1.55; color:var(--text-muted); flex:1; max-width:92%; }
 .product-card .price{ margin-top:13px; padding-top:11px; border-top:1px solid var(--surface-line); font-family:var(--mono); font-size:11px; color:var(--text); }
@@ -399,6 +399,12 @@ footer .fnote{ font-size: 13px; color: var(--text-faint); margin-top: 6px; max-w
 .product-card .category,
 .product-card .tag {
   display: none !important;
+}
+
+/* Product performance */
+.product-card .p-image img {
+  content-visibility: auto;
+  background: var(--bg-soft);
 }
 </style>
 </head>
@@ -469,7 +475,6 @@ footer .fnote{ font-size: 13px; color: var(--text-faint); margin-top: 6px; max-w
     
     <div class="product-modal-image" id="product-modal-image"></div>
     <div class="product-modal-content">
-      <div class="product-modal-tag" id="product-modal-tag"></div>
       <h3 id="product-modal-name"></h3>
       <div class="product-modal-brand" id="product-modal-brand"></div>
       <div class="product-modal-price" id="product-modal-price"></div>
@@ -740,27 +745,36 @@ function renderProductCard(p){
          onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex';">
        <div class="p-no-image" style="display:none;width:100%;height:100%;align-items:center;justify-content:center;">Image unavailable</div>`
     : `<div class="p-no-image">No image</div>`;
-
-  const meta = [];
-  if(p.category) meta.push(`<span>${escapeHtml(p.category)}</span>`);
-  if(p.sizes) meta.push(`<span>Sizes available</span>`);
-  if(p.colors) meta.push(`<span>Colors available</span>`);
-
   return `<article class="product-card show" data-gender="${escapeHtml(p.gender)}" data-product-id="${escapeHtml(p.id)}">
     <div class="p-image">${imageMarkup}</div>
     <div class="p-body">
-      <div class="p-tag">${tag}</div>
       ${p.brand ? `<div class="p-brand">${escapeHtml(p.brand)}</div>` : ''}
       <h4>${escapeHtml(p.name)}</h4>
-      <p>${escapeHtml(p.description || 'Tap to view product details.')}</p>
-      ${meta.length ? `<div class="p-meta">${meta.join('')}</div>` : ''}
-      ${priceLine ? `<div class="price">${priceLine}</div>` : ''}
+      <p>${escapeHtml(p.description || 'Tap to view product details.')}</p>${priceLine ? `<div class="price">${priceLine}</div>` : ''}
     </div>
   </article>`;
 }
 
 const productsGrid = document.getElementById('products-grid');
 let allProducts = [];
+const PRODUCTS_CACHE_KEY = 'twostops_products_v2';
+const PRODUCTS_CACHE_TTL = 10 * 60 * 1000;
+
+function getCachedProducts(){
+  try{
+    const cached = JSON.parse(localStorage.getItem(PRODUCTS_CACHE_KEY) || 'null');
+    return Array.isArray(cached?.products) ? cached : null;
+  }catch(e){ return null; }
+}
+
+function saveCachedProducts(products){
+  try{
+    localStorage.setItem(PRODUCTS_CACHE_KEY, JSON.stringify({
+      savedAt: Date.now(),
+      products
+    }));
+  }catch(e){}
+}
 
 function renderProducts(){
   if(!productsGrid) return;
@@ -775,7 +789,13 @@ function renderProducts(){
     productsGrid.innerHTML = `<p style="grid-column:1/-1;text-align:center;color:var(--text-faint);font-size:13px;padding:40px 0;">No ${escapeHtml(active)} products yet.</p>`;
     return;
   }
-  productsGrid.innerHTML = filtered.map(renderProductCard).join('');
+
+  productsGrid.innerHTML = filtered.map((p, index) => {
+    const card = renderProductCard(p);
+    // First 6 images are likely to be visible immediately.
+    return card.replace('loading="lazy"', index < 6 ? 'loading="eager" fetchpriority="high"' : 'loading="lazy"');
+  }).join('');
+
   productsGrid.querySelectorAll('.product-card').forEach(card => {
     card.addEventListener('click', () => {
       const product = allProducts.find(p => String(p.id) === card.dataset.productId);
@@ -784,68 +804,72 @@ function renderProducts(){
   });
 }
 
-function setProductText(id, value){
-  const el = document.getElementById(id);
-  if(el) el.textContent = value || '—';
-}
+async function fetchProductsFast(){
+  const cached = getCachedProducts();
 
-function openProductModal(p){
-  const modal = document.getElementById('product-modal');
-  if(!modal) return;
-
-  setProductText('product-modal-tag', p.category || (p.gender === 'women' ? 'Women' : 'Men'));
-  setProductText('product-modal-name', p.name);
-  setProductText('product-modal-brand', p.brand || '');
-  setProductText('product-modal-price', productPrice(p).replaceAll('&amp;','&') || 'Price on request');
-  setProductText('product-modal-desc', p.description || 'Details available on request.');
-
-
-
-const imageBox = document.getElementById('product-modal-image');
-  if(imageBox){
-    if(p.image_url){
-      imageBox.innerHTML = `<img src="${escapeHtml(p.image_url)}" alt="${escapeHtml(p.name)}"
-        onerror="this.onerror=null;this.remove();this.parentElement.innerHTML='<div class=&quot;p-no-image&quot;>Image unavailable</div>';">`;
-    } else {
-      imageBox.innerHTML = fallbackIcon(p);
-    }
+  // Paint cached products immediately.
+  if(cached?.products?.length){
+    allProducts = cached.products;
+    renderProducts();
   }
 
-  modal.classList.add('open');
-  modal.setAttribute('aria-hidden','false');
-  document.body.style.overflow='hidden';
+  try{
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 12000);
+    const res = await fetch(PRODUCTS_API + '/api/products', {
+      method: 'GET',
+      cache: 'default',
+      headers: { 'Accept': 'application/json' },
+      signal: controller.signal
+    });
+    clearTimeout(timeout);
+
+    if(!res.ok) throw new Error('API returned ' + res.status);
+    const products = await res.json();
+
+    if(Array.isArray(products)){
+      allProducts = products;
+      saveCachedProducts(products);
+      renderProducts();
+    }
+  }catch(err){
+    console.error('Products API error:', err);
+    // Keep cached products on screen if the network/API is slow or temporarily down.
+    if(!cached?.products?.length && !allProducts.length){
+      productsGrid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--text-faint);font-size:13px;padding:40px 0;">Products are taking a moment to load…</p>';
+      // One quiet retry instead of making the user refresh.
+      setTimeout(fetchProductsFastRetry, 1800);
+    }
+  }
 }
 
-function closeProductModal(){
-  const modal = document.getElementById('product-modal');
-  if(!modal) return;
-  modal.classList.remove('open');
-  modal.setAttribute('aria-hidden','true');
-  document.body.style.overflow='';
+async function fetchProductsFastRetry(){
+  try{
+    const res = await fetch(PRODUCTS_API + '/api/products', {
+      headers: { 'Accept': 'application/json' },
+      cache: 'default'
+    });
+    if(!res.ok) throw new Error();
+    const products = await res.json();
+    if(Array.isArray(products)){
+      allProducts = products;
+      saveCachedProducts(products);
+      renderProducts();
+    }
+  }catch(e){
+    if(!allProducts.length){
+      productsGrid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--text-faint);font-size:13px;padding:40px 0;">Couldn’t load products right now. Please try again shortly.</p>';
+    }
+  }
 }
-
-const productModal = document.getElementById('product-modal');
-const productModalClose = document.getElementById('product-modal-close');
-if(productModalClose) productModalClose.addEventListener('click', closeProductModal);
-if(productModal){
-  productModal.addEventListener('click', e => { if(e.target === productModal) closeProductModal(); });
-}
-document.addEventListener('keydown', e => { if(e.key === 'Escape') closeProductModal(); });
 
 if(productsGrid){
-  fetch(PRODUCTS_API + '/api/products', { cache: 'no-store' })
-    .then(res => {
-      if(!res.ok) throw new Error('API returned ' + res.status);
-      return res.json();
-    })
-    .then(products => {
-      allProducts = Array.isArray(products) ? products : [];
-      renderProducts();
-    })
-    .catch(err => {
-      console.error('Products API error:', err);
-      productsGrid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--text-faint);font-size:13px;padding:40px 0;">Couldn\'t load products right now — please refresh, or check back shortly.</p>';
-    });
+  const cached = getCachedProducts();
+  if(cached?.products?.length){
+    allProducts = cached.products;
+    renderProducts();
+  }
+  fetchProductsFast();
 }
 
 // ---- Product showcase gender filter ----
